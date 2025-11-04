@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Year Countdown & Progress</title>
+    <style>
+        /* Basic Reset & Global Styles */
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #ffffff; /* text-white */
+        }
+
+        /* Main container with gradient and flex layout */
+        .container {
+            min-height: 100vh;
+            background-image: linear-gradient(to bottom right, #111827, #000000); /* from-gray-900 to-black */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .content {
+            width: 100%;
+            max-width: 896px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700;
+            letter-spacing: -0.025em; /* tracking-tight */
+        }
+        @media (min-width: 640px) {
+            h1 { font-size: 3rem; } /* sm:text-5xl */
+        }
+        @media (min-width: 768px) {
+            h1 { font-size: 3.75rem; } /* md:text-6xl */
+        }
+
+        h1 span {
+            color: #2dd4bf; /* text-teal-400 */
+        }
+
+        .subtitle {
+            color: #9ca3af; /* text-gray-400 */
+            margin-top: 0.5rem;
+            font-size: 1.125rem; /* text-lg */
+        }
+
+        h2 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+        @media (min-width: 768px) {
+            h2 { font-size: 1.875rem; } /* md:text-3xl */
+        }
+
+        /* Countdown Cards */
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .cards-container { gap: 1.5rem; }
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800/50 */
+            backdrop-filter: blur(4px);
+            padding: 1.5rem;
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            width: 6rem;
+            height: 6rem;
+            border: 1px solid #374151; /* border-gray-700 */
+            transition: transform 0.2s ease-in-out;
+        }
+        @media (min-width: 768px) {
+            .card { width: 8rem; height: 8rem; }
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card .value {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700;
+            letter-spacing: -0.05em; /* tracking-tighter */
+        }
+        @media (min-width: 768px) {
+            .card .value { font-size: 3rem; }
+        }
+
+        .card .label {
+            font-size: 0.75rem; /* text-xs */
+            font-weight: 500;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+        }
+        
+        /* Progress Circle */
+        .progress-container {
+            width: 100%;
+            max-width: 448px; /* max-w-md */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .progress-circle-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+        }
+
+        .progress-circle-svg {
+            transform: rotate(-90deg);
+        }
+
+        #progress-circle {
+            transition: stroke-dashoffset 0.8s ease-out;
+            color: #2dd4bf; /* text-teal-400 */
+        }
+
+        .progress-background {
+            color: #374151; /* text-gray-700 */
+        }
+        
+        .progress-text-wrapper {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #progress-text {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+        }
+        @media (min-width: 768px) {
+            #progress-text { font-size: 2.25rem; } /* md:text-4xl */
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 1rem;
+            color: #6b7281; /* text-gray-500 */
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <main class="content">
+        
+        <div>
+          <h1>Until <span id="next-year">...</span></h1>
+          <p class="subtitle">Time is ticking down to a fresh start.</p>
+        </div>
+
+        <div class="cards-container">
+          <!-- Days Card -->
+          <div class="card">
+            <span id="days-left" class="value">-</span>
+            <span class="label">Days</span>
+          </div>
+          <!-- Hours Card -->
+          <div class="card">
+            <span id="hours-left" class="value">-</span>
+            <span class="label">Hours</span>
+          </div>
+          <!-- Minutes Card -->
+          <div class="card">
+            <span id="minutes-left" class="value">-</span>
+            <span class="label">Minutes</span>
+          </div>
+          <!-- Seconds Card -->
+          <div class="card">
+            <span id="seconds-left" class="value">-</span>
+            <span class="label">Seconds</span>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <h2>Year Progress</h2>
+          <div class="progress-circle-wrapper">
+            <svg class="progress-circle-svg" width="220" height="220" viewBox="0 0 220 220">
+              <circle
+                class="progress-background"
+                stroke="currentColor"
+                stroke-width="18"
+                fill="transparent"
+                r="101"
+                cx="110"
+                cy="110"
+              />
+              <circle
+                id="progress-circle"
+                stroke="currentColor"
+                stroke-width="18"
+                stroke-linecap="round"
+                fill="transparent"
+                r="101"
+                cx="110"
+                cy="110"
+                style="stroke-dasharray: 634.6; stroke-dashoffset: 634.6;"
+              />
+            </svg>
+            <div class="progress-text-wrapper">
+              <span id="progress-text">-.--%</span>
+            </div>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+        <p style="color: #9ca3af;">Crafted for a new beginning.</p>
+      
+    </div>
+    
+    <script src="/index.js">
+      
+    </script>
+</body>
+</html>
