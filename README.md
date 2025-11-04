@@ -2,7 +2,7 @@
 
 A sleek, single-page web application that displays a real-time countdown to the next new year and a circular progress bar visualizing the percentage of the current year that has elapsed. This project is built with pure HTML, CSS, and JavaScript, with no external frameworks or libraries, making it lightweight, fast, and easy to understand.
 
-![A preview of the New Year Countdown application showing countdown cards for days, hours, minutes, and seconds, along with a circular progress bar indicating the year's completion percentage.](https://i.imgur.com/example-image.png)
+![A preview of the New Year Countdown application showing countdown cards for days, hours, minutes, and seconds, along with a circular progress bar indicating the year's completion percentage.](image.png)
 *(Image is a placeholder representation)*
 
 ---
